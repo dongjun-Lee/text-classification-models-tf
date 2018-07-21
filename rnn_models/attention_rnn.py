@@ -31,7 +31,7 @@ class AttentionRNN(object):
                 fw_cells, bw_cells, self.x_emb, sequence_length=self.x_len, dtype=tf.float32)
 
         with tf.name_scope("attention"):
-            self.attention_score = tf.nn.softmax(tf.layers.dense(self.rnn_outputs, 1, activation=tf.nn.tanh))
+            self.attention_score = tf.nn.softmax(tf.layers.dense(self.rnn_outputs, 1, activation=tf.nn.tanh), axis=1)
             self.attention_out = tf.squeeze(
                 tf.matmul(tf.transpose(self.rnn_outputs, perm=[0, 2, 1]), self.attention_score),
                 axis=-1)
