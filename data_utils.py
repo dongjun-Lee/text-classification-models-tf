@@ -86,12 +86,12 @@ def build_char_dataset(step, model, document_max_len):
     df = df.sample(frac=1)
 
     char_dict = dict()
+    char_dict["<pad>"] = 0
+    char_dict["<unk>"] = 1
     for c in alphabet:
         char_dict[c] = len(char_dict)
-    char_dict["<pad>"] = -2 if model == "char_cnn" else 0
-    char_dict["<unk>"] = -1 if model == "char_cnn" else 1
 
-    alphabet_size = len(alphabet) if model == "char_cnn" else len(alphabet) + 2
+    alphabet_size = len(alphabet) + 2
 
     x = list(map(lambda content: list(map(lambda d: char_dict.get(d, char_dict["<unk>"]), content.lower())), df["content"]))
     x = list(map(lambda d: d[:document_max_len], x))
